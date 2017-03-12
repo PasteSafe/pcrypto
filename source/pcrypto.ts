@@ -43,8 +43,7 @@ export async function encrypt(options: EncryptOptions): Promise<string> {
   options = {...defaults, ...options}
   const {text, charset, algorithm, ivSize} = options
 
-  // Initialization Vector
-  // The IV is random noise, which is used in every encryption to make it unique and unpredictable.
+  // Initialization vector — random noise used in every encryption to make it unique and unpredictable.
   //  - wiki: https://en.wikipedia.org/wiki/Initialization_vector
   const iv = new Uint8Array(ivSize)
   crypto.getRandomValues(iv)
@@ -76,19 +75,22 @@ export async function encrypt(options: EncryptOptions): Promise<string> {
 
 /**
  * Decrypt a hex string with a password.
- * Return the clear text payload.
+ * Return deciphered text.
  */
 export async function decrypt(options: DecryptOptions): Promise<string> {
   options = {...defaults, ...options}
   const {hexcode, charset, algorithm, ivSize} = options
 
+  // Unwind encrypted hexcode to encrypted binary.
   const binary = unhex(hexcode)
+
+  // Perform decryption.
   const payload = new Uint8Array(await crypto.subtle.decrypt(
     {name: algorithm, iv: new Uint8Array(binary, 0, ivSize)},
     await prepareKey(options),
     new Uint8Array(binary, ivSize, binary.byteLength - ivSize)
   ))
 
-  // Return the decrypted text.
+  // Return deciphered text.
   return new TextDecoder(charset).decode(payload)
 }
