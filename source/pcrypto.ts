@@ -1,6 +1,6 @@
 
 // Simple text encryption and decryption in the browser.
-//  - exports `encrypt` and `decrypt`
+//  - exports async `encrypt` and `decrypt` functions
 //  - built on the Web Crypto API: https://developer.mozilla.org/en-US/docs/Web/API/Web_Crypto_API
 
 import {hex, unhex} from "./hexer"
@@ -28,7 +28,7 @@ const defaults: CryptionOptions = {
  * Convert a password string into a CryptoKey: https://developer.mozilla.org/en-US/docs/Web/API/CryptoKey
  *  - used in both encryption and decryption
  */
-async function prepareKey(options: PrepareKeyOptions): Promise<CryptoKey> {
+async function convertPasswordToCryptoKey(options: PrepareKeyOptions): Promise<CryptoKey> {
   options = {...defaults, ...options}
   const {password, hashAlgorithm, charset, algorithm} = options
   const hash = await crypto.subtle.digest(hashAlgorithm, new TextEncoder(charset).encode(password))
@@ -43,7 +43,10 @@ export async function encrypt(options: EncryptOptions): Promise<string> {
   options = {...defaults, ...options}
   const {text, charset, algorithm, ivSize} = options
 
-  // Initialization vector — random noise used in every encryption to make it unique and unpredictable.
+  // Initialization vector
+  //  - random noise
+  //  - used in every encryption
+  //  - makes the encryption unique and unpredictable.
   //  - wiki: https://en.wikipedia.org/wiki/Initialization_vector
   const iv = new Uint8Array(ivSize)
   crypto.getRandomValues(iv)
@@ -51,25 +54,25 @@ export async function encrypt(options: EncryptOptions): Promise<string> {
   // Perform the encryption.
   const payload = new Uint8Array(await crypto.subtle.encrypt(
 
-    // Parameters for the web crypto api.
+    // Parameters for the web crypto api encryption.
     {name: algorithm, iv},
 
-    // Prepare the password as a binary crypto key.
-    await prepareKey(options),
+    // CryptoKey based on the password.
+    await convertPasswordToCryptoKey(options),
 
-    // The web cryptography api requires binary input, so we use TextEncoder to encode our string.
-    // This is why internet explorer isn't supported.
+    // The web cryptography api requires binary input, so we use TextEncoder to encode our string into binary.
+    //  - some browsers don't have TextEncoder, and aren't supported by pcrypto
     //  - mdn: https://developer.mozilla.org/en-US/docs/Web/API/TextEncoder/TextEncoder
     //  - whatwg: https://encoding.spec.whatwg.org/#dom-textencoder-encoding
     new TextEncoder(charset).encode(text)
   ))
 
-  // Combining the IV and the encryption result into a single binary buffer.
+  // Combining the IV and the encrypted payload into a single binary buffer.
   const binary = new ArrayBuffer(ivSize + payload.byteLength)
   new Uint8Array(binary, 0, ivSize).set(iv)
   new Uint8Array(binary, ivSize, payload.byteLength).set(payload)
 
-  // Return the hexcode encrypted string.
+  // Return encrypted hexcode string.
   return hex(binary)
 }
 
@@ -82,15 +85,15 @@ export async function decrypt(options: DecryptOptions): Promise<string> {
   const {hexcode, charset, algorithm, ivSize} = options
 
   // Unwind encrypted hexcode to encrypted binary.
-  const binary = unhex(hexcode)
+  const encryptedBinary = unhex(hexcode)
 
   // Perform decryption.
-  const payload = new Uint8Array(await crypto.subtle.decrypt(
-    {name: algorithm, iv: new Uint8Array(binary, 0, ivSize)},
-    await prepareKey(options),
-    new Uint8Array(binary, ivSize, binary.byteLength - ivSize)
+  const decryptedBinary = new Uint8Array(await crypto.subtle.decrypt(
+    {name: algorithm, iv: new Uint8Array(encryptedBinary, 0, ivSize)},
+    await convertPasswordToCryptoKey(options),
+    new Uint8Array(encryptedBinary, ivSize, encryptedBinary.byteLength - ivSize)
   ))
 
-  // Return deciphered text.
-  return new TextDecoder(charset).decode(payload)
+  // Return deciphered text (binary payload converted back into text).
+  return new TextDecoder(charset).decode(decryptedBinary)
 }
