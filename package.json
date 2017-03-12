@@ -1,0 +1,24 @@
+{
+  "name": "pcrypto",
+  "version": "0.4.0",
+  "description": "Simple text encryption and decryption in the browser",
+  "main": "build/pcrypto.js",
+  "scripts": {
+    "build": "tsc",
+    "test": "echo Tests coming soon && exit 0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PasteSafe/pcrypto.git"
+  },
+  "author": "Chase Moskal <chasemoskal@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/PasteSafe/pcrypto/issues"
+  },
+  "homepage": "https://github.com/PasteSafe/pcrypto#readme",
+  "devDependencies": {
+    "@types/text-encoding": "0.0.30",
+    "typescript": "^2.2.1"
+  }
+}
