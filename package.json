@@ -4,8 +4,9 @@
   "description": "Simple text encryption and decryption in the browser",
   "main": "build/pcrypto.js",
   "scripts": {
-    "build": "tsc",
-    "test": "echo Tests coming soon && exit 0"
+    "build": "rimraf build && tsc && npm test && echo Done build.",
+    "test": "browserify build/pcrypto.test.js | tape-run",
+    "test-debug": "browserify build/pcrypto.test.js | tape-run --port 8844"
   },
   "repository": {
     "type": "git",
@@ -18,7 +19,12 @@
   },
   "homepage": "https://github.com/PasteSafe/pcrypto#readme",
   "devDependencies": {
+    "@types/tape": "^4.2.29",
     "@types/text-encoding": "0.0.30",
+    "browserify": "^14.1.0",
+    "rimraf": "^2.6.1",
+    "tape": "^4.6.3",
+    "tape-run": "^3.0.0",
     "typescript": "^2.2.1"
   }
 }

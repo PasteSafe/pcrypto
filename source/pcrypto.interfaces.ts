@@ -13,7 +13,7 @@ export interface CommonCryptionOptions {
  * Options for preparing a text password as a key.
  */
 export interface PrepareKeyOptions extends CommonCryptionOptions {
-  hashAlgorithm: string
+  hashAlgorithm?: string
 }
 
 /**
