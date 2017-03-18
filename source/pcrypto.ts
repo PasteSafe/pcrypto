@@ -4,46 +4,42 @@
 //  - built on the Web Crypto API: https://developer.mozilla.org/en-US/docs/Web/API/Web_Crypto_API
 
 import {hex, unhex} from "./hexer"
-import {EncryptOptions, DecryptOptions, PrepareKeyOptions, CryptionOptions} from "./pcrypto.interfaces"
+import {CommonCryptionOptions, EncryptOptions, DecryptOptions} from "./pcrypto.interfaces"
 
 /**
  * Browser's Web Crypto API: https://developer.mozilla.org/en-US/docs/Web/API/Crypto
  */
 const crypto: Crypto = window.crypto || (<any>window).msCrypto
 
-/**
- * Default values for all crypto options.
- */
-const defaults: CryptionOptions = {
-  password: undefined,
-  text: undefined,
-  hexcode: undefined,
-  charset: "utf-8",
+const constants = Object.freeze({
   algorithm: "aes-gcm",
   hashAlgorithm: "sha-256",
   ivSize: 128
-}
+})
+
+const defaults = Object.freeze({
+  charset: "utf-8"
+})
 
 /**
  * Convert a password string into a CryptoKey: https://developer.mozilla.org/en-US/docs/Web/API/CryptoKey
  *  - used in both encryption and decryption
+ *  - not exported, private to pcrypto
  */
-async function convertPasswordToCryptoKey(options: PrepareKeyOptions): Promise<CryptoKey> {
-  options = {...defaults, ...options}
-  const {password, hashAlgorithm, charset, algorithm} = options
+async function convertPasswordToCryptoKey({charset, password}: CommonCryptionOptions): Promise<CryptoKey> {
+  const {hashAlgorithm} = constants
   const hash = await crypto.subtle.digest(hashAlgorithm, new TextEncoder(charset).encode(password))
-  return crypto.subtle.importKey("raw", hash, algorithm, false, ["encrypt", "decrypt"])
+  return crypto.subtle.importKey("raw", hash, "aes-gcm", false, ["encrypt", "decrypt"])
 }
 
 /**
  * Encrypt text with a password.
- * Return an encrypted hex string.
+ *  - return an encrypted hex string
  */
-export async function encrypt(options: EncryptOptions): Promise<string> {
-  options = {...defaults, ...options}
-  const {text, charset, algorithm, ivSize} = options
+export async function encrypt({password, plaintext, charset = defaults.charset}: EncryptOptions): Promise<string> {
+  const {ivSize, algorithm} = constants
 
-  // Initialization vector
+  // Initialization vector.
   //  - random noise
   //  - used in every encryption
   //  - makes the encryption unique and unpredictable.
@@ -51,20 +47,20 @@ export async function encrypt(options: EncryptOptions): Promise<string> {
   const iv = new Uint8Array(ivSize)
   crypto.getRandomValues(iv)
 
-  // Perform the encryption.
+  // Perform the encryption, calling the Web Crypto API.
   const payload = new Uint8Array(await crypto.subtle.encrypt(
 
     // Parameters for the web crypto api encryption.
     {name: algorithm, iv},
 
     // CryptoKey based on the password.
-    await convertPasswordToCryptoKey(options),
+    await convertPasswordToCryptoKey({charset, password}),
 
     // The web cryptography api requires binary input, so we use TextEncoder to encode our string into binary.
     //  - some browsers don't have TextEncoder, and aren't supported by pcrypto
     //  - mdn: https://developer.mozilla.org/en-US/docs/Web/API/TextEncoder/TextEncoder
     //  - whatwg: https://encoding.spec.whatwg.org/#dom-textencoder-encoding
-    new TextEncoder(charset).encode(text)
+    new TextEncoder(charset).encode(plaintext)
   ))
 
   // Combining the IV and the encrypted payload into a single binary buffer.
@@ -78,19 +74,18 @@ export async function encrypt(options: EncryptOptions): Promise<string> {
 
 /**
  * Decrypt a hex string with a password.
- * Return deciphered text.
+ *  - return deciphered text
  */
-export async function decrypt(options: DecryptOptions): Promise<string> {
-  options = {...defaults, ...options}
-  const {hexcode, charset, algorithm, ivSize} = options
+export async function decrypt({password, ciphertext, charset = defaults.charset}: DecryptOptions): Promise<string> {
+  const {algorithm, ivSize} = constants
 
   // Unwind encrypted hexcode to encrypted binary.
-  const encryptedBinary = unhex(hexcode)
+  const encryptedBinary = unhex(ciphertext)
 
   // Perform decryption.
   const decryptedBinary = new Uint8Array(await crypto.subtle.decrypt(
     {name: algorithm, iv: new Uint8Array(encryptedBinary, 0, ivSize)},
-    await convertPasswordToCryptoKey(options),
+    await convertPasswordToCryptoKey({charset, password}),
     new Uint8Array(encryptedBinary, ivSize, encryptedBinary.byteLength - ivSize)
   ))
 

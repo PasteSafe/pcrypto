@@ -1,36 +1,30 @@
 
 /**
- * Cryption options that are common to encryption, decryption, and key preparation.
+ * Options common to both encryption and decryption.
  */
 export interface CommonCryptionOptions {
-  password: string
-  charset?: string
-  algorithm?: string
-  ivSize?: number
-}
 
-/**
- * Options for preparing a text password as a key.
- */
-export interface PrepareKeyOptions extends CommonCryptionOptions {
-  hashAlgorithm?: string
+  /** Password string, which may contain any characters, but must not be an empty string (""). */
+  password: string
+
+  /** TextEncoder charset of the plaintext. */
+  charset?: string
 }
 
 /**
  * Options for encrypting text.
  */
-export interface EncryptOptions extends PrepareKeyOptions {
-  text: string
+export interface EncryptOptions extends CommonCryptionOptions {
+
+  /** String of text to be encrypted. */
+  plaintext: string
 }
 
 /**
  * Options for decrypting text.
  */
-export interface DecryptOptions extends PrepareKeyOptions {
-  hexcode: string
-}
+export interface DecryptOptions extends CommonCryptionOptions {
 
-/**
- * Combination of all cryption option types.
- */
-export type CryptionOptions = CommonCryptionOptions & EncryptOptions & DecryptOptions & PrepareKeyOptions
+  /** Encrypted text, which can only be decrypted with the use of the password. */
+  ciphertext: string
+}
