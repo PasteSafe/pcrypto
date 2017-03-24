@@ -5,7 +5,7 @@
   "main": "build/pcrypto.js",
   "scripts": {
     "build": "rimraf build && tsc && browserify build/pcrypto.global.js -o build/pcrypto.global.bundle.js && npm test && echo Done build.",
-    "test": "browserify build/pcrypto.test.js | tape-run",
+    "test": "browserify build/pcrypto.test.js | tape-run | faucet",
     "test-debug": "echo Launching web server for: http://localhost:8844/ && browserify build/pcrypto.test.js | tape-run --port 8844",
     "start": "http-server"
   },
@@ -23,6 +23,7 @@
     "@types/tape": "^4.2.29",
     "@types/text-encoding": "0.0.30",
     "browserify": "^14.1.0",
+    "faucet": "0.0.1",
     "http-server": "^0.9.0",
     "rimraf": "^2.6.1",
     "tape": "^4.6.3",
