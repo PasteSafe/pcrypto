@@ -27,8 +27,7 @@ const defaults = Object.freeze({
  *  - not exported, private to pcrypto
  */
 async function convertPasswordToCryptoKey({charset, password}: CommonCryptionOptions): Promise<CryptoKey> {
-  const {hashAlgorithm} = constants
-  const hash = await crypto.subtle.digest(hashAlgorithm, new TextEncoder(charset).encode(password))
+  const hash = await crypto.subtle.digest(constants.hashAlgorithm, new TextEncoder(charset).encode(password))
   return crypto.subtle.importKey("raw", hash, "aes-gcm", false, ["encrypt", "decrypt"])
 }
 
@@ -38,6 +37,10 @@ async function convertPasswordToCryptoKey({charset, password}: CommonCryptionOpt
  */
 export async function encrypt({password, plaintext, charset = defaults.charset}: EncryptOptions): Promise<string> {
   const {ivSize, algorithm} = constants
+
+  // Enforce required options.
+  if (!password) throw new Error("encrypt requires option 'password'")
+  if (!plaintext) throw new Error("encrypt requires option 'plaintext'")
 
   // Initialization vector.
   //  - random noise
@@ -78,6 +81,10 @@ export async function encrypt({password, plaintext, charset = defaults.charset}:
  */
 export async function decrypt({password, ciphertext, charset = defaults.charset}: DecryptOptions): Promise<string> {
   const {algorithm, ivSize} = constants
+
+  // Enforce required options.
+  if (!password) throw new Error("decrypt requires option 'password'")
+  if (!ciphertext) throw new Error("decrypt requires option 'ciphertext'")
 
   // Unwind encrypted hexcode to encrypted binary.
   const encryptedBinary = unhex(ciphertext)

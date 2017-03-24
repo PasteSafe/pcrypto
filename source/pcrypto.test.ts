@@ -29,34 +29,30 @@ tape("encrypt works as expected", {...opts}, async test => {
   test.end()
 })
 
-// Skip
-tape("encrypt fails with empty password", {...opts, skip: true}, async test => {
+tape("encrypt requires option 'password'", {...opts}, async test => {
   const password = ""
   const {plaintext} = constants
   try {
     const actual = await encrypt({password, plaintext})
-    test.fail("encrypt must throw given nulls")
+    test.fail("encrypt without option 'password' must throw")
     test.end()
   }
   catch (error) {
-    test.ok(error, "failed encrypt throws")
-    test.ok(error instanceof Error, "encrypt throws Error instance on failure")
+    test.ok(error && error instanceof Error, "encrypt fails properly without option 'password'")
     test.end()
   }
 })
 
-// Skip
-tape("encrypt fails with nulls", {...opts, skip: true}, async test => {
-  const password = null
-  const plaintext = null
+tape("encrypt requires option 'plaintext'", {...opts}, async test => {
+  const {password} = constants
+  const plaintext = ""
   try {
     const actual = await encrypt({password, plaintext})
-    test.fail("encrypt must throw when given nulls")
+    test.fail("encrypt without option 'plaintext' must throw")
     test.end()
   }
   catch (error) {
-    test.ok(error, "encrypt fails nicely")
-    test.ok(error instanceof Error, "encrypt fails and throws Error instance on failure")
+    test.ok(error && error instanceof Error, "encrypt fails properly without option 'plaintext'")
     test.end()
   }
 })
@@ -74,11 +70,39 @@ tape("decrypt works as expected", {...opts}, async test => {
   test.end()
 })
 
+tape("decrypt requires option 'password'", {...opts}, async test => {
+  const password = ""
+  const {ciphertext} = constants
+  try {
+    const actual = await decrypt({password, ciphertext})
+    test.fail("decrypt without option 'password' must throw")
+    test.end()
+  }
+  catch (error) {
+    test.ok(error && error instanceof Error, "decrypt fails nicely without option 'password'")
+    test.end()
+  }
+})
+
+tape("decrypt requires option 'ciphertext'", {...opts}, async test => {
+  const {password} = constants
+  const ciphertext = ""
+  try {
+    const actual = await decrypt({password, ciphertext})
+    test.fail("decrypt without option 'ciphertext' must throw")
+    test.end()
+  }
+  catch (error) {
+    test.ok(error && error instanceof Error, "decrypt fails nicely without option 'ciphertext'")
+    test.end()
+  }
+})
+
 //
 // Integration tests
 //
 
-tape("encrypt and decrypt text", {...opts}, async test => {
+tape("encrypt and decrypt work together as expected", {...opts}, async test => {
   const {password, plaintext} = constants
   const ciphertext = await encrypt({password, plaintext})
   const newtext = await decrypt({password, ciphertext})
