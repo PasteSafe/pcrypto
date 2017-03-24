@@ -1,11 +1,11 @@
 {
     "compilerOptions": {
         "module": "umd",
-        "target": "es5",
+        "target": "es2017",
         "rootDir": "source",
         "outDir": "build",
         "moduleResolution": "node",
-        "lib": ["es6", "dom"],
+        "lib": ["es2017", "dom"],
         "noImplicitAny": false,
         "declaration": true,
         "sourceMap": true

@@ -4,7 +4,6 @@
   "isShellCommand": true,
   "showOutput": "always",
   "suppressTaskName": true,
-  "_runner": "terminal",
   "tasks": [
     {
       "taskName": "install",
@@ -12,12 +11,12 @@
     },
     {
       "taskName": "build",
-      "args": ["run", "build"],
+      "args": ["run", "build", "-s"],
       "isBuildCommand": true
     },
     {
       "taskName": "test",
-      "args": ["run", "test"]
+      "args": ["run", "test", "-s"]
     }
   ]
 }
