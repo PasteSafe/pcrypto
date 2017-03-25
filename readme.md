@@ -41,6 +41,8 @@ const plaintext = "Italian Greyhounds — السلوقي الإيطالي"
 
 encrypt({password, plaintext})
   .then(ciphertext => console.log(`ciphertext: ${ciphertext}`))
+
+    //» "FD084D07..."
 ```
 
 
@@ -48,20 +50,22 @@ example `de`cryption
 --------------------
 
 ```typescript
-const password: "doggos",
-const ciphertext: "FD084D07F6745BE726A78D2D9691D94017A211CFB9694CE03B028A0"
-  + "A29D8C820F48AFACF3775DFC53350156FF6C724368A3216072DD38EA703559E"
-  + "16E2887C181892DC02F8BFFE2CF87DB7B1E8895B217DAAE61C586C2314A6A01"
-  + "237E6AB95E09A8D333BC375EE69622359F0ECF176F71109B72FA36CD623299B"
-  + "B3C99D411F969F2AF7021DA2183E148A75165DDBBCE0EA79A9E8A4157BE8AB5"
-  + "985B15E4BB62FDACA8B9C9A199E3780E74081A83C69641F0F9597B9AA3C7F4A"
-  + "41299C8F7C541D6DE17E9B2A59"
+const password = "doggos",
+const ciphertext = "FD084D07F6745BE726A78D2D9691D94017A211CFB9694CE03B0"
+  + "28A0A29D8C820F48AFACF3775DFC53350156FF6C724368A3216072DD38EA703559"
+  + "E16E2887C181892DC02F8BFFE2CF87DB7B1E8895B217DAAE61C586C2314A6A0123"
+  + "7E6AB95E09A8D333BC375EE69622359F0ECF176F71109B72FA36CD623299BB3C99"
+  + "D411F969F2AF7021DA2183E148A75165DDBBCE0EA79A9E8A4157BE8AB5985B15E4"
+  + "BB62FDACA8B9C9A199E3780E74081A83C69641F0F9597B9AA3C7F4A41299C8F7C5"
+  + "41D6DE17E9B2A59"
 
 decrypt({password, ciphertext})
   .then(plaintext => console.log(`plaintext: ${plaintext}`))
+
+    //» "Italian Greyhounds — السلوقي الإيطالي"
 ```
 
-use pcrypto the old-fashioned `<script>`-tag way *(window object global)*
+use pcrypto the old-fashioned `<script>` tag way *(window object global)*
 -------------------------------------------------------------------------
 
   - use npm to install `pcrypto` somewhere
