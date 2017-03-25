@@ -10,6 +10,7 @@ import {CommonCryptionOptions, EncryptOptions, DecryptOptions} from "./pcrypto.i
  * Browser's Web Crypto API: https://developer.mozilla.org/en-US/docs/Web/API/Crypto
  */
 const crypto: Crypto = window.crypto || (<any>window).msCrypto
+const cryptoSubtle: SubtleCrypto = crypto.subtle || (<any>window).crypto.webkitSubtle
 
 const constants = Object.freeze({
   algorithm: "aes-gcm",
@@ -27,8 +28,8 @@ const defaults = Object.freeze({
  *  - not exported, private to pcrypto
  */
 async function convertPasswordToCryptoKey({charset, password}: CommonCryptionOptions): Promise<CryptoKey> {
-  const hash = await crypto.subtle.digest(constants.hashAlgorithm, new TextEncoder(charset).encode(password))
-  return crypto.subtle.importKey("raw", hash, "aes-gcm", false, ["encrypt", "decrypt"])
+  const hash = await cryptoSubtle.digest(constants.hashAlgorithm, new TextEncoder(charset).encode(password))
+  return cryptoSubtle.importKey("raw", hash, "aes-gcm", false, ["encrypt", "decrypt"])
 }
 
 /**
@@ -51,7 +52,7 @@ export async function encrypt({password, plaintext, charset = defaults.charset}:
   crypto.getRandomValues(iv)
 
   // Perform the encryption, calling the Web Crypto API.
-  const payload = new Uint8Array(await crypto.subtle.encrypt(
+  const payload = new Uint8Array(await cryptoSubtle.encrypt(
 
     // Parameters for the web crypto api encryption.
     {name: algorithm, iv},
@@ -90,7 +91,7 @@ export async function decrypt({password, ciphertext, charset = defaults.charset}
   const encryptedBinary = unhex(ciphertext)
 
   // Perform decryption.
-  const decryptedBinary = new Uint8Array(await crypto.subtle.decrypt(
+  const decryptedBinary = new Uint8Array(await cryptoSubtle.decrypt(
     {name: algorithm, iv: new Uint8Array(encryptedBinary, 0, ivSize)},
     await convertPasswordToCryptoKey({charset, password}),
     new Uint8Array(encryptedBinary, ivSize, encryptedBinary.byteLength - ivSize)
