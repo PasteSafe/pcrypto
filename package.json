@@ -1,8 +1,9 @@
 {
   "name": "pcrypto",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "Simple text encryption and decryption in the browser",
   "main": "build/pcrypto.js",
+  "types": "build/pcrypto.d.ts",
   "scripts": {
     "build": "rimraf build && tsc && browserify build/pcrypto.global.js -o build/pcrypto.global.bundle.js && npm test && echo Done build.",
     "test": "browserify build/pcrypto.test.js | tape-run | faucet",
