@@ -5,6 +5,7 @@
   "main": "build/pcrypto.js",
   "types": "build/pcrypto.d.ts",
   "scripts": {
+    "prepublish": "npm run build",
     "build": "rimraf build && tsc && browserify build/pcrypto.global.js -o build/pcrypto.global.bundle.js && npm test && echo Done build.",
     "test": "browserify build/pcrypto.test.js | tape-run | faucet",
     "test-debug": "echo Launching web server for: http://localhost:8844/ && browserify build/pcrypto.test.js | tape-run --port 8844",
