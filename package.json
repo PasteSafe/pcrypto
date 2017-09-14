@@ -6,7 +6,7 @@
 	"types": "dist/pcrypto.d.ts",
 	"scripts": {
 		"prepare": "npm run build -s",
-		"build": "rimraf dist && tsc && browserify dist/pcrypto.global.js -o dist/pcrypto.global.bundle.js && npm test -s && echo Done build.",
+		"build": "rimraf dist && tsc && browserify dist/pcrypto.global.js -o dist/pcrypto.global.bundle.js && echo Done build.",
 		"test": "browserify dist/pcrypto.test.js | tape-run | faucet",
 		"test-debug": "echo Launching web server for: http://localhost:8844/ && browserify dist/pcrypto.test.js | tape-run --port 8844",
 		"start": "http-server"
@@ -22,14 +22,15 @@
 	},
 	"homepage": "https://github.com/PasteSafe/pcrypto#readme",
 	"devDependencies": {
-		"@types/tape": "^4.2.29",
+		"@types/tape": "4.2.30",
 		"@types/text-encoding": "0.0.32",
-		"browserify": "^14.1.0",
+		"browserify": "14.4.0",
 		"faucet": "0.0.1",
-		"http-server": "^0.10.0",
-		"rimraf": "^2.6.1",
-		"tape": "^4.6.3",
-		"tape-run": "^3.0.0",
-		"typescript": "^2.2.1"
+		"http-server": "0.10.0",
+		"npm-run-all": "4.1.1",
+		"rimraf": "2.6.2",
+		"tape": "4.8.0",
+		"tape-run": "3.0.0",
+		"typescript": "2.5.2"
 	}
 }
