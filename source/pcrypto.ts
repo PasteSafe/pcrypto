@@ -1,5 +1,5 @@
 
-// Simple text encryption and decryption in the browser
+// Text encryption and decryption in the browser
 //  - exports async `encrypt` and `decrypt` functions
 //  - built on the Web Crypto API: https://developer.mozilla.org/en-US/docs/Web/API/Web_Crypto_API
 
