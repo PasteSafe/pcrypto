@@ -21,7 +21,7 @@ const skip = {...opts, skip: true}
 // Tests for 'encrypt'
 //
 
-tape("encrypt works as expected", opts, async test => {
+tape("encrypt: works as expected", opts, async test => {
   const {password, plaintext} = constants
   const ciphertext = await encrypt({password, plaintext})
   test.ok(ciphertext, "encrypted ciphertext is ok")
@@ -30,7 +30,7 @@ tape("encrypt works as expected", opts, async test => {
   test.end()
 })
 
-tape("encrypt requires option 'password'", opts, async test => {
+tape("encrypt: requires option 'password'", opts, async test => {
   const password = ""
   const {plaintext} = constants
   try {
@@ -44,7 +44,7 @@ tape("encrypt requires option 'password'", opts, async test => {
   }
 })
 
-tape("encrypt requires option 'plaintext'", opts, async test => {
+tape("encrypt: requires option 'plaintext'", opts, async test => {
   const {password} = constants
   const plaintext = ""
   try {
@@ -62,7 +62,7 @@ tape("encrypt requires option 'plaintext'", opts, async test => {
 // Tests for 'decrypt'
 //
 
-tape("decrypt works as expected", opts, async test => {
+tape("decrypt: works as expected", opts, async test => {
   const {password, ciphertext} = constants
   const plaintext = await decrypt({password, ciphertext})
   test.ok(plaintext, "decrypted plaintext is ok")
@@ -71,7 +71,7 @@ tape("decrypt works as expected", opts, async test => {
   test.end()
 })
 
-tape("decrypt requires option 'password'", opts, async test => {
+tape("decrypt: requires option 'password'", opts, async test => {
   const password = ""
   const {ciphertext} = constants
   try {
@@ -85,7 +85,7 @@ tape("decrypt requires option 'password'", opts, async test => {
   }
 })
 
-tape("decrypt requires option 'ciphertext'", opts, async test => {
+tape("decrypt: requires option 'ciphertext'", opts, async test => {
   const {password} = constants
   const ciphertext = ""
   try {
@@ -103,7 +103,7 @@ tape("decrypt requires option 'ciphertext'", opts, async test => {
 // Integration tests
 //
 
-tape("encrypt and decrypt work together as expected", opts, async test => {
+tape("encrypt and decrypt: work together as expected", opts, async test => {
   const {password, plaintext} = constants
   const ciphertext = await encrypt({password, plaintext})
   const newtext = await decrypt({password, ciphertext})
