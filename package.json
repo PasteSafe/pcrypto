@@ -1,35 +1,35 @@
 {
-  "name": "pcrypto",
-  "version": "0.5.3",
-  "description": "Simple text encryption and decryption in the browser",
-  "main": "build/pcrypto.js",
-  "types": "build/pcrypto.d.ts",
-  "scripts": {
-    "prepublish": "npm run build",
-    "build": "rimraf build && tsc && browserify build/pcrypto.global.js -o build/pcrypto.global.bundle.js && npm test && echo Done build.",
-    "test": "browserify build/pcrypto.test.js | tape-run | faucet",
-    "test-debug": "echo Launching web server for: http://localhost:8844/ && browserify build/pcrypto.test.js | tape-run --port 8844",
-    "start": "http-server"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/PasteSafe/pcrypto.git"
-  },
-  "author": "Chase Moskal <chasemoskal@gmail.com>",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/PasteSafe/pcrypto/issues"
-  },
-  "homepage": "https://github.com/PasteSafe/pcrypto#readme",
-  "devDependencies": {
-    "@types/tape": "^4.2.29",
-    "@types/text-encoding": "0.0.30",
-    "browserify": "^14.1.0",
-    "faucet": "0.0.1",
-    "http-server": "^0.9.0",
-    "rimraf": "^2.6.1",
-    "tape": "^4.6.3",
-    "tape-run": "^3.0.0",
-    "typescript": "^2.2.1"
-  }
+	"name": "pcrypto",
+	"version": "0.5.4",
+	"description": "text encryption and decryption in the browser",
+	"main": "dist/pcrypto.js",
+	"types": "dist/pcrypto.d.ts",
+	"scripts": {
+		"prepare": "npm run build -s",
+		"build": "rimraf dist && tsc && browserify dist/pcrypto.global.js -o dist/pcrypto.global.bundle.js && npm test -s && echo Done build.",
+		"test": "browserify dist/pcrypto.test.js | tape-run | faucet",
+		"test-debug": "echo Launching web server for: http://localhost:8844/ && browserify dist/pcrypto.test.js | tape-run --port 8844",
+		"start": "http-server"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/PasteSafe/pcrypto.git"
+	},
+	"author": "Chase Moskal <chasemoskal@gmail.com>",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/PasteSafe/pcrypto/issues"
+	},
+	"homepage": "https://github.com/PasteSafe/pcrypto#readme",
+	"devDependencies": {
+		"@types/tape": "^4.2.29",
+		"@types/text-encoding": "0.0.32",
+		"browserify": "^14.1.0",
+		"faucet": "0.0.1",
+		"http-server": "^0.10.0",
+		"rimraf": "^2.6.1",
+		"tape": "^4.6.3",
+		"tape-run": "^3.0.0",
+		"typescript": "^2.2.1"
+	}
 }
