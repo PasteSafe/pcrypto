@@ -3,7 +3,7 @@
 		"module": "umd",
 		"target": "es5",
 		"rootDir": "source",
-		"outDir": "build",
+		"outDir": "dist",
 		"moduleResolution": "node",
 		"lib": ["es2017", "dom"],
 		"noImplicitAny": false,
@@ -11,7 +11,7 @@
 		"sourceMap": true
 	},
 	"exclude": [
-		"build",
+		"dist",
 		"node_modules"
 	]
 }

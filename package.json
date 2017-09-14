@@ -2,13 +2,13 @@
 	"name": "pcrypto",
 	"version": "0.5.3",
 	"description": "text encryption and decryption in the browser",
-	"main": "build/pcrypto.js",
-	"types": "build/pcrypto.d.ts",
+	"main": "dist/pcrypto.js",
+	"types": "dist/pcrypto.d.ts",
 	"scripts": {
 		"prepare": "npm run build -s",
-		"build": "rimraf build && tsc && browserify build/pcrypto.global.js -o build/pcrypto.global.bundle.js && npm test -s && echo Done build.",
-		"test": "browserify build/pcrypto.test.js | tape-run | faucet",
-		"test-debug": "echo Launching web server for: http://localhost:8844/ && browserify build/pcrypto.test.js | tape-run --port 8844",
+		"build": "rimraf dist && tsc && browserify dist/pcrypto.global.js -o dist/pcrypto.global.bundle.js && npm test -s && echo Done build.",
+		"test": "browserify dist/pcrypto.test.js | tape-run | faucet",
+		"test-debug": "echo Launching web server for: http://localhost:8844/ && browserify dist/pcrypto.test.js | tape-run --port 8844",
 		"start": "http-server"
 	},
 	"repository": {
