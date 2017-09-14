@@ -4,11 +4,11 @@
  */
 export interface CommonCryptionOptions {
 
-  /** Password string, which may contain any characters, but must not be an empty string (""). */
-  password: string
+	/** Password string, which may contain any characters, but must not be an empty string (""). */
+	password: string
 
-  /** TextEncoder charset of the plaintext. */
-  charset?: string
+	/** TextEncoder charset of the plaintext. */
+	charset?: string
 }
 
 /**
@@ -16,8 +16,8 @@ export interface CommonCryptionOptions {
  */
 export interface EncryptOptions extends CommonCryptionOptions {
 
-  /** String of text to be encrypted. */
-  plaintext: string
+	/** String of text to be encrypted. */
+	plaintext: string
 }
 
 /**
@@ -25,6 +25,6 @@ export interface EncryptOptions extends CommonCryptionOptions {
  */
 export interface DecryptOptions extends CommonCryptionOptions {
 
-  /** Encrypted text, which can only be decrypted with the use of the password. */
-  ciphertext: string
+	/** Encrypted text, which can only be decrypted with the use of the password. */
+	ciphertext: string
 }
