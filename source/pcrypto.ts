@@ -3,7 +3,7 @@
 //  - exports async `encrypt` and `decrypt` functions
 //  - built on the Web Crypto API: https://developer.mozilla.org/en-US/docs/Web/API/Web_Crypto_API
 
-import {hex, unhex} from "./hexer"
+import {hex, unhex} from "./hextool"
 import {CommonCryptionOptions, EncryptOptions, DecryptOptions} from "./pcrypto.interfaces"
 
 /**
