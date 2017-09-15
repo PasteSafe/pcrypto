@@ -1,6 +1,6 @@
 {
 	"name": "pcrypto",
-	"version": "0.5.4",
+	"version": "0.5.5",
 	"description": "text encryption and decryption in the browser",
 	"main": "dist/pcrypto.js",
 	"types": "dist/pcrypto.d.ts",
