@@ -71,6 +71,19 @@ tape("decrypt: works as expected", opts, async test => {
 	test.end()
 })
 
+tape("decrypt: incorrect password fails gracefully", opts, async test => {
+	const {ciphertext} = constants
+	const password = "incorrect"
+	try {
+		const plaintext = await decrypt({password, ciphertext})
+		test.fail("decrypt should throw an error")
+	}
+	catch (error) {
+		test.ok(error, "error is ok")
+	}
+	test.end()
+})
+
 tape("decrypt: requires option 'password'", opts, async test => {
 	const password = ""
 	const {ciphertext} = constants
