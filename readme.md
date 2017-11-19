@@ -6,7 +6,7 @@ pcrypto — simple in-browser text encryption
 - in-browser only *(leverages the web crypto api)*
 - npm module, umd format, es5
 - written in typescript
-- aes-gcm encryption with a 128 byte IV prefix
+- aes-gcm encryption with a 96 byte initialization vector
 
 ***pre-release warning:*** *pcrypto is in development and is not recommended for production use. the encrypt/decrpyt implementations may be subject to change between releases. ciphertext encrypted in one version of pcrypto may not be decryptable in another version*
 

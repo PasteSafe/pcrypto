@@ -15,7 +15,7 @@ const cryptoSubtle: SubtleCrypto = crypto.subtle || (<any>window).crypto.webkitS
 const constants = Object.freeze({
 	algorithm: "aes-gcm",
 	hashAlgorithm: "sha-256",
-	ivSize: 128
+	ivSize: 96
 })
 
 const defaults = Object.freeze({
