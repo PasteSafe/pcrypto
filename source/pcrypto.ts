@@ -14,40 +14,29 @@ text encryption and decryption in the browser
 
 import {hex, unhex} from "./hextool"
 
-/**
- * Options common to both encryption and decryption
- */
 export interface CommonCryptionOptions {
 
 	/** Password string, which may contain any characters, but must not be an empty string ("") */
 	password: string
 }
 
-/**
- * Options for encrypting text
- */
 export interface EncryptOptions extends CommonCryptionOptions {
 
 	/** String of text to be encrypted */
 	plaintext: string
 }
 
-/**
- * Options for decrypting text
- */
 export interface DecryptOptions extends CommonCryptionOptions {
 
 	/** Encrypted text, which can only be decrypted with the use of the password */
 	ciphertext: string
 }
 
-/**
- * Browser Web Crypto API: https://developer.mozilla.org/en-US/docs/Web/API/Crypto
- */
+// browser web crypto api: https://developer.mozilla.org/en-US/docs/Web/API/Crypto
 const crypto: Crypto = window.crypto || (<any>window).msCrypto
 const cryptoSubtle: SubtleCrypto = crypto.subtle || (<any>window).crypto.webkitSubtle
 
-/** Internal constants for the pcrypto functions */
+// constants for pcrypto internal use
 const constants = Object.freeze({
 	algorithm: "aes-gcm",
 	hashAlgorithm: "sha-256",
